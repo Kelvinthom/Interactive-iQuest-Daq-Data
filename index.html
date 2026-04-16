@@ -1,260 +1,217 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>iQuest Explorer | Kelvin Thom</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
-<style>
-    :root {
-        --bg-app: #f1f5f9; --bg-main: #ffffff; --border-color: #cbd5e1;
-        --text-main: #0f172a; --text-muted: #64748b; --accent: #2563eb;
-        --j-key: #7c3aed; --j-str: #16a34a; --j-num: #ea580c; --j-bool: #dc2626;
-    }
-    * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
-    body { margin: 0; background: var(--bg-app); color: var(--text-main); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
-    
-    /* Navigation Bar */
-    header { 
-        height: 64px; background: white; border-bottom: 2px solid var(--border-color); 
-        display: flex; align-items: center; padding: 0 24px; justify-content: space-between; z-index: 50; 
-    }
-    .nav-left { display: flex; align-items: center; gap: 32px; }
-    .brand b { font-size: 20px; color: #0f172a; letter-spacing: -0.5px; }
-    .nav-links { display: flex; gap: 20px; }
-    .nav-links a { 
-        text-decoration: none; color: var(--text-muted); font-weight: 600; font-size: 14px; 
-        padding: 8px 12px; border-radius: 6px; transition: 0.2s; cursor: pointer;
-    }
-    .nav-links a:hover { background: #f1f5f9; color: var(--text-main); }
-    .nav-links a.active { color: var(--accent); background: #eff6ff; }
-
-    .author-badge {
-        display: flex; align-items: center; background: #f8fafc; padding: 6px 12px;
-        border-radius: 6px; border: 2px solid var(--border-color);
-    }
-    .author-badge span { font-size: 11px; font-weight: 800; color: #1e293b; text-transform: uppercase; }
-
-    /* Page Views */
-    .view-container { flex: 1; display: flex; overflow: hidden; position: relative; }
-    .page-view { 
-        position: absolute; top: 0; left: 0; width: 100%; height: 100%; 
-        display: none; flex-direction: column; 
-    }
-    .page-view.active { display: flex; }
-
-    /* Home Page (Explorer) Layout */
-    .explorer-layout { display: flex; flex: 1; overflow: hidden; }
-    @media (max-width: 850px) { .explorer-layout { flex-direction: column; } }
-
-    aside { 
-        width: 280px; background: #f8fafc; border-right: 2px solid var(--border-color); 
-        padding: 24px; display: flex; flex-direction: column; gap: 16px; 
-    }
-    @media (max-width: 850px) { aside { width: 100%; border-right: none; border-bottom: 2px solid var(--border-color); padding: 15px; } }
-
-    .stat-card { background: white; border: 2px solid var(--border-color); padding: 16px; border-radius: 8px; }
-    .label { font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; }
-    .value { font-size: 20px; font-weight: 700; margin-top: 4px; color: var(--accent); }
-    
-    main { flex: 1; display: flex; flex-direction: column; background: white; margin: 16px; border-radius: 8px; border: 2px solid var(--border-color); overflow: hidden; }
-    .toolbar { padding: 16px 24px; background: #f8fafc; border-bottom: 2px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
-    .btn-dl { background: #0f172a; color: white; border: none; padding: 10px 20px; border-radius: 4px; font-weight: 700; cursor: pointer; font-size: 12px; }
-
-    .json-viewer { flex: 1; overflow: auto; padding: 20px; font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.6; }
-    .json-node { margin-left: 20px; }
-    .json-line { display: flex; padding: 2px 0; border-bottom: 1px solid #f1f5f9; cursor: pointer; }
-    .json-toggle { width: 20px; color: var(--text-muted); text-align: center; }
-    .json-content-block { border-left: 2px solid #e2e8f0; margin-left: 9px; }
-
-    /* Notes Page Styling */
-    .notes-view { padding: 40px; overflow-y: auto; background: white; }
-    .notes-content { max-width: 800px; margin: 0 auto; line-height: 1.6; }
-    .notes-content h1 { font-size: 32px; border-bottom: 3px solid var(--accent); padding-bottom: 10px; margin-bottom: 30px; }
-    .notes-content h2 { font-size: 22px; margin-top: 40px; color: var(--accent); }
-    .notes-content h3 { font-size: 18px; margin-top: 25px; border-left: 4px solid var(--accent); padding-left: 10px; }
-    .notes-content code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 14px; }
-    .notes-content pre { background: #1e293b; color: #f8fafc; padding: 20px; border-radius: 8px; overflow-x: auto; }
-    .notes-content ul { padding-left: 20px; }
-    .notes-content li { margin-bottom: 10px; }
-
-    footer { background: #0f172a; color: #94a3b8; padding: 10px 24px; font-size: 11px; display: flex; justify-content: space-between; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iQuest Explorer | Kelvin Thom</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .json-font { font-family: 'JetBrains Mono', monospace; }
+        .j-key { color: #7c3aed; font-weight: 600; }
+        .j-string { color: #16a34a; }
+        .j-number { color: #ea580c; }
+        .j-bool { color: #dc2626; }
+        .page-view { display: none; }
+        .page-view.active { display: flex; }
+    </style>
 </head>
-<body>
+<body class="bg-slate-50 h-screen flex flex-col overflow-hidden">
 
-    <header>
-        <div class="nav-left">
-            <div class="brand"><b>iQuest</b> Explorer</div>
-            <nav class="nav-links">
-                <a id="nav-home" class="active" onclick="showPage('home')">Home</a>
-                <a id="nav-notes" onclick="showPage('notes')">Notes</a>
+    <header class="h-16 bg-white border-b-2 border-slate-200 flex items-center justify-between px-6 shrink-0 z-50">
+        <div class="flex items-center gap-8">
+            <div class="text-xl font-extrabold tracking-tight text-slate-900">iQuest <span class="text-blue-600 font-normal">Explorer</span></div>
+            <nav class="flex gap-2">
+                <button onclick="showPage('home')" id="btn-home" class="px-4 py-2 text-sm font-bold rounded-md transition-all bg-blue-50 text-blue-600">Home</button>
+                <button onclick="showPage('notes')" id="btn-notes" class="px-4 py-2 text-sm font-bold rounded-md transition-all text-slate-500 hover:bg-slate-100">Notes</button>
             </nav>
         </div>
-        <div class="author-badge"><span>Auth: Kelvin Thom</span></div>
+        <div class="flex items-center gap-3 bg-slate-100 border-2 border-slate-200 px-3 py-1.5 rounded-lg">
+            <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+            <span class="text-[10px] font-black text-slate-700 uppercase tracking-widest">Auth: Kelvin Thom</span>
+        </div>
     </header>
 
-    <div class="view-container">
-        <div id="page-home" class="page-view active">
-            <div class="explorer-layout">
-                <aside>
-                    <div class="label">Performance Metrics</div>
-                    <div class="stat-card"><div class="label">Payload Size</div><div id="size-val" class="value">--</div></div>
-                    <div class="stat-card"><div class="label">Root Keys</div><div id="key-count" class="value">--</div></div>
-                    <div class="stat-card"><div class="label">Status</div><div id="status-text" class="value" style="font-size: 14px; color:#16a34a;">Connected</div></div>
-                </aside>
-                <main>
-                    <div class="toolbar">
-                        <div style="font-weight: 800; color: var(--text-muted); font-size: 11px;">INTERACTIVE_EXPLORER_V1</div>
-                        <button class="btn-dl" onclick="downloadJSON()">📥 Download Data</button>
-                    </div>
-                    <div class="json-viewer" id="json-root">Loading data...</div>
-                </main>
-            </div>
+    <div class="flex-1 relative overflow-hidden">
+        
+        <div id="page-home" class="page-view active h-full flex flex-col md:flex-row">
+            <aside class="w-full md:w-72 bg-slate-50 border-b md:border-b-0 md:border-r-2 border-slate-200 p-6 flex flex-col gap-4">
+                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">System Metrics</p>
+                <div class="bg-white border-2 border-slate-200 p-4 rounded-xl shadow-sm">
+                    <p class="text-[10px] font-bold text-slate-500 uppercase">Payload Size</p>
+                    <p id="size-val" class="text-2xl font-bold text-blue-600">--</p>
+                </div>
+                <div class="bg-white border-2 border-slate-200 p-4 rounded-xl shadow-sm">
+                    <p class="text-[10px] font-bold text-slate-500 uppercase">Root Nodes</p>
+                    <p id="key-count" class="text-2xl font-bold text-slate-900">--</p>
+                </div>
+            </aside>
+
+            <main class="flex-1 bg-white m-4 rounded-2xl border-2 border-slate-200 shadow-xl overflow-hidden flex flex-col">
+                <div class="px-6 py-4 bg-slate-50/50 border-b-2 border-slate-200 flex justify-between items-center">
+                    <span class="text-[10px] font-bold text-slate-400 tracking-tighter">DATA_INTERROGATION_ACTIVE</span>
+                    <button onclick="downloadJSON()" class="bg-slate-900 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-xs font-bold transition-colors flex items-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                        Download JSON
+                    </button>
+                </div>
+                <div id="json-root" class="flex-1 overflow-auto p-6 json-font text-sm leading-relaxed">
+                    <div class="animate-pulse text-slate-400">Loading data stream...</div>
+                </div>
+            </main>
         </div>
 
-        <div id="page-notes" class="page-view">
-            <div class="notes-view">
-                <div class="notes-content">
-                    <h1>iQuest-Vib-Daq Data Specification</h1>
-                    <p>The iQuest-Vib-Daq system provides vibration and condition monitoring data for predictive analytics and fault detection.</p>
-                    <p>This document defines the structure, parameters, and data types available for cloud ingestion and analytics processing.</p>
-                    
-                    <hr>
-                    <h2>Data Streams</h2>
-                    <p>The Data Acquisition (DAQ) system generates the following primary data types.</p>
-                    
-                    <h3>DAQ_Info</h3>
-                    <p>Metadata describing the acquisition setup, monitored asset, and sensor configuration.</p>
-                    <ul>
-                        <li><b>Location</b>: Physical section of the plant.</li>
-                        <li><b>assetID</b>: Unique identifier of the machine.</li>
-                        <li><b>sensorLabels</b>: Human-readable sensor positions.</li>
-                        <li><b>sensorID</b>: Internal mapping points.</li>
-                        <li><b>Units</b>: g, mm/s, degrees C, ms, Hz.</li>
-                    </ul>
-                    <pre>{
-  "DAQ_Info": {
-    "Location": "BM-Primary-Milling",
-    "assetID": "Ball-mill-3",
-    "sensorLabels": ["MTR-NDE-H", "G/OU-DE-V", ...],
-    "Units": ["g", "mm/s", "degrees C", "ms", "Hz"]
-  }
-}</pre>
+        <div id="page-notes" class="page-view h-full bg-white overflow-y-auto">
+            <div class="max-w-4xl mx-auto py-12 px-8">
+                <h1 class="text-4xl font-extrabold text-slate-900 mb-2">iQuest-Vib-Daq Data Specification</h1>
+                <p class="text-slate-500 text-lg mb-8">Data Acquisition structure and parameter definitions for cloud ingestion.</p>
+                
+                <div class="space-y-12">
+                    <section>
+                        <h2 class="text-2xl font-bold text-blue-600 border-b-2 border-blue-100 pb-2 mb-4">Overview</h2>
+                        <p class="text-slate-700 leading-relaxed">The iQuest-Vib-Daq system provides vibration and condition monitoring data for predictive analytics and fault detection.</p>
+                    </section>
 
-                    <h3>S_aRMS_t & S_vRMS_t</h3>
-                    <p><b>Acceleration & Velocity RMS:</b> Represents overall vibration energy and severity trends used to assess machine health over long periods.</p>
+                    <section>
+                        <h2 class="text-2xl font-bold text-blue-600 border-b-2 border-blue-100 pb-2 mb-4">DAQ_Info</h2>
+                        <p class="mb-4 text-slate-600">Metadata describing the acquisition setup and sensor configuration.</p>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6 text-sm">
+                            <div class="bg-slate-50 p-3 rounded-lg border border-slate-200"><b>Location:</b> Physical site</div>
+                            <div class="bg-slate-50 p-3 rounded-lg border border-slate-200"><b>assetID:</b> Machine UID</div>
+                            <div class="bg-slate-50 p-3 rounded-lg border border-slate-200"><b>Units:</b> g, mm/s, °C, Hz</div>
+                        </div>
+                        <div class="bg-slate-900 rounded-xl p-6 overflow-hidden">
+                            <p class="text-[10px] font-bold text-slate-500 uppercase mb-3">Example JSON Structure</p>
+                            <pre id="example-json" class="json-font text-xs leading-6 text-slate-300"></pre>
+                        </div>
+                    </section>
 
-                    <h3>S_aTW & S_vTW</h3>
-                    <p><b>Time Waveforms:</b> Raw or processed signals sampled over time, critical for transient detection and detailed waveform analysis.</p>
-
-                    <h3>S_aFFT & S_vFFT</h3>
-                    <p><b>Frequency Domain (FFT):</b> Used to identify specific vibration frequencies, harmonics, and mechanical fault signatures.</p>
-
-                    <h3>S_temp & speedRMS</h3>
-                    <p><b>Environmental & Speed:</b> Thermal monitoring and rotational stability metrics to detect abnormal operating conditions.</p>
+                    <section class="grid md:grid-cols-2 gap-6">
+                        <div class="p-5 border-2 border-slate-100 rounded-xl hover:border-blue-200 transition-colors">
+                            <h3 class="font-bold text-slate-900">S_aRMS_t / S_vRMS_t</h3>
+                            <p class="text-sm text-slate-500 mt-1">Time-domain RMS signals representing overall vibration intensity.</p>
+                        </div>
+                        <div class="p-5 border-2 border-slate-100 rounded-xl hover:border-blue-200 transition-colors">
+                            <h3 class="font-bold text-slate-900">S_aTW / S_vTW</h3>
+                            <p class="text-sm text-slate-500 mt-1">Raw Time Waveform data used for transient waveform analysis.</p>
+                        </div>
+                        <div class="p-5 border-2 border-slate-100 rounded-xl hover:border-blue-200 transition-colors">
+                            <h3 class="font-bold text-slate-900">S_aFFT / S_vFFT</h3>
+                            <p class="text-sm text-slate-500 mt-1">Frequency-domain FFT used for identifies mechanical fault signatures.</p>
+                        </div>
+                        <div class="p-5 border-2 border-slate-100 rounded-xl hover:border-blue-200 transition-colors">
+                            <h3 class="font-bold text-slate-900">S_temp / speedRMS</h3>
+                            <p class="text-sm text-slate-500 mt-1">Temperature and rotational stability measurements.</p>
+                        </div>
+                    </section>
                 </div>
             </div>
         </div>
     </div>
 
-    <footer>
-        <span>iQuest Engine v3.1 | Build: 2026.Static</span>
+    <footer class="h-10 bg-slate-900 flex items-center justify-between px-6 shrink-0 text-[10px] text-slate-500 font-bold uppercase tracking-widest">
+        <span>iQuest_v3.1_Engine</span>
         <span>&copy; 2026 Kelvin Thom</span>
     </footer>
 
     <script>
         let cachedData = null;
 
-        // Navigation Logic
-        function showPage(pageId) {
+        // Navigation Switcher
+        function showPage(page) {
             document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+            document.getElementById('page-' + page).classList.add('active');
             
-            document.getElementById('page-' + pageId).classList.add('active');
-            document.getElementById('nav-' + pageId).classList.add('active');
+            // UI Toggle
+            const btnHome = document.getElementById('btn-home');
+            const btnNotes = document.getElementById('btn-notes');
+            if(page === 'home') {
+                btnHome.className = "px-4 py-2 text-sm font-bold rounded-md bg-blue-50 text-blue-600";
+                btnNotes.className = "px-4 py-2 text-sm font-bold rounded-md text-slate-500 hover:bg-slate-100";
+            } else {
+                btnNotes.className = "px-4 py-2 text-sm font-bold rounded-md bg-blue-50 text-blue-600";
+                btnHome.className = "px-4 py-2 text-sm font-bold rounded-md text-slate-500 hover:bg-slate-100";
+            }
         }
 
-        // Data Fetching
+        // Fetch Data
         fetch('./data.json')
             .then(res => res.json())
             .then(data => {
                 cachedData = data;
-                updateStats(data);
+                const size = new Blob([JSON.stringify(data)]).size;
+                document.getElementById('size-val').textContent = (size / (1024*1024)).toFixed(2) + " MB";
+                document.getElementById('key-count').textContent = Object.keys(data).length;
                 renderLevel(data, document.getElementById('json-root'), true);
-            })
-            .catch(err => {
-                document.getElementById('json-root').innerHTML = "Error loading data.json";
             });
 
-        function updateStats(data) {
-            const jsonString = JSON.stringify(data);
-            const sizeInBytes = new Blob([jsonString]).size;
-            const sizeReadable = (sizeInBytes / 1024).toFixed(2) + " KB";
-            document.getElementById('size-val').textContent = sizeReadable;
-            document.getElementById('key-count').textContent = Object.keys(data).length;
+        // Syntax Highlighter Engine
+        function highlight(val) {
+            if (typeof val === 'string') return `<span class="j-string">"${val}"</span>`;
+            if (typeof val === 'number') return `<span class="j-number">${val}</span>`;
+            if (typeof val === 'boolean') return `<span class="j-bool">${val}</span>`;
+            return val;
         }
 
-        // Kelvin's original Render Logic
-        function renderLevel(obj, container, clearFirst = false) {
-            if (clearFirst) container.innerHTML = '';
+        function renderLevel(obj, container, clear = false) {
+            if (clear) container.innerHTML = '';
             const frag = document.createDocumentFragment();
             Object.keys(obj).forEach(key => {
                 const val = obj[key];
                 const isObj = val !== null && typeof val === 'object';
                 const node = document.createElement('div');
-                node.className = 'json-node';
+                node.className = "ml-4 border-l border-slate-100 pl-4 py-1";
+                
                 const line = document.createElement('div');
-                line.className = 'json-line';
+                line.className = "flex gap-2 items-start cursor-pointer hover:bg-slate-50 rounded px-1";
+                
+                const keySpan = `<span class="j-key">"${key}":</span>`;
+                
                 if (isObj) {
-                    const toggle = document.createElement('span');
-                    toggle.className = 'json-toggle'; toggle.textContent = '▶';
-                    line.appendChild(toggle);
+                    line.innerHTML = `<span class="text-slate-400 text-[10px] mt-1">▼</span> ${keySpan} <span class="text-slate-400 text-[10px] italic">${Array.isArray(val) ? 'Array' : 'Object'}</span>`;
+                    node.appendChild(line);
+                    const childWrap = document.createElement('div');
+                    renderLevel(val, childWrap);
+                    node.appendChild(childWrap);
+                    
                     line.onclick = (e) => {
                         e.stopPropagation();
-                        const isExpanded = toggle.textContent === '▼';
-                        toggle.textContent = isExpanded ? '▶' : '▼';
-                        let content = node.querySelector('.json-content-block');
-                        if (!isExpanded) {
-                            if (!content) {
-                                content = document.createElement('div');
-                                content.className = 'json-content-block';
-                                renderLevel(val, content);
-                                node.appendChild(content);
-                            } else content.style.display = 'block';
-                        } else if (content) content.style.display = 'none';
+                        const isHidden = childWrap.style.display === 'none';
+                        childWrap.style.display = isHidden ? 'block' : 'none';
+                        line.querySelector('span').textContent = isHidden ? '▼' : '▶';
                     };
                 } else {
-                    const spacer = document.createElement('span');
-                    spacer.className = 'json-toggle'; spacer.style.visibility = 'hidden';
-                    spacer.textContent = '▶'; line.appendChild(spacer);
+                    line.innerHTML = `<span class="w-2"></span> ${keySpan} ${highlight(val)}`;
+                    node.appendChild(line);
                 }
-                const keyS = document.createElement('span');
-                keyS.className = 'key'; keyS.textContent = '"' + key + '":';
-                line.appendChild(keyS);
-                if (isObj) {
-                    const hint = document.createElement('span');
-                    hint.style.color = '#94a3b8'; hint.style.fontSize = '11px';
-                    hint.textContent = Array.isArray(val) ? `[${val.length}]` : '{...}';
-                    line.appendChild(hint);
-                } else {
-                    const valS = document.createElement('span');
-                    valS.className = typeof val;
-                    valS.textContent = typeof val === 'string' ? '"' + val + '"' : val;
-                    line.appendChild(valS);
-                }
-                node.appendChild(line);
                 frag.appendChild(node);
             });
             container.appendChild(frag);
         }
+
+        // Load Syntax-Highlighted Example in Notes
+        const example = {
+            "DAQ_Info": {
+                "Location": "BM-Primary-Milling",
+                "assetID": "Ball-mill-3",
+                "sensorLabels": ["MTR-NDE-H", "G/OU-DE-V", "MTR-DE-H"],
+                "Units": ["g", "mm/s", "degrees C"]
+            }
+        };
+        
+        // Simple string-based highlight for the static example
+        document.getElementById('example-json').innerHTML = JSON.stringify(example, null, 2)
+            .replace(/"(\w+)":/g, '<span class="j-key">"$1":</span>')
+            .replace(/: "(.*?)"/g, ': <span class="j-string">"$1"</span>')
+            .replace(/: (\d+)/g, ': <span class="j-number">$1</span>');
 
         function downloadJSON() {
             if (!cachedData) return;
             const blob = new Blob([JSON.stringify(cachedData)], {type: 'application/json'});
             const a = document.createElement('a');
             a.href = window.URL.createObjectURL(blob);
-            a.download = 'iQuest_Data_Kelvin.json';
+            a.download = 'iQuest_Data_KelvinThom.json';
             a.click();
         }
     </script>
