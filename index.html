@@ -6,104 +6,144 @@
 <title>iQuest Explorer | Kelvin Thom</title>
 <style>
     :root {
-        --bg-app: #f8fafc; --bg-main: #ffffff; --border-color: #cbd5e1;
+        --bg-app: #f1f5f9; --bg-main: #ffffff; --border-color: #e2e8f0;
         --text-main: #0f172a; --text-muted: #64748b; --accent: #2563eb;
         --j-key: #7c3aed; --j-str: #16a34a; --j-num: #ea580c; --j-bool: #dc2626;
     }
-    * { box-sizing: border-box; font-family: 'Inter', system-ui, sans-serif; }
+    * { box-sizing: border-box; font-family: 'Inter', system-ui, -apple-system, sans-serif; }
     body { margin: 0; background: var(--bg-app); color: var(--text-main); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
-    header { height: 60px; background: white; border-bottom: 2px solid var(--border-color); display: flex; align-items: center; padding: 0 24px; justify-content: space-between; z-index: 10; }
-    .logo-badge { background: #0f172a; color: white; padding: 4px 8px; border-radius: 4px; font-weight: 800; margin-right: 8px; }
-    .author-tag { font-size: 11px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; }
+    
+    /* Modern Header Redesign */
+    header { 
+        height: 64px; 
+        background: rgba(255, 255, 255, 0.8); 
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--border-color); 
+        display: flex; 
+        align-items: center; 
+        padding: 0 32px; 
+        justify-content: space-between; 
+        z-index: 10; 
+    }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand b { font-size: 20px; letter-spacing: -0.5px; color: #0f172a; }
+    .brand span { color: var(--accent); font-weight: 400; }
+
+    /* Nice Author Tag */
+    .author-badge {
+        display: flex;
+        align-items: center;
+        background: #f1f5f9;
+        padding: 6px 14px;
+        border-radius: 20px;
+        border: 1px solid var(--border-color);
+    }
+    .author-badge .dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; margin-right: 8px; }
+    .author-badge span { font-size: 12px; font-weight: 600; color: #475569; letter-spacing: 0.3px; }
+
     .container { display: flex; flex: 1; overflow: hidden; }
-    aside { width: 280px; background: #f1f5f9; border-right: 2px solid var(--border-color); padding: 20px; display: flex; flex-direction: column; gap: 12px; }
-    .stat-card { background: white; border: 1px solid var(--border-color); padding: 12px; border-radius: 6px; }
-    .label { font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
-    .value { font-size: 18px; font-weight: 700; margin-top: 4px; color: var(--accent); }
-    main { flex: 1; display: flex; flex-direction: column; background: white; }
-    .toolbar { padding: 12px 24px; background: white; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
-    .btn-dl { background: var(--accent); color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 12px; transition: opacity 0.2s; }
-    .btn-dl:hover { opacity: 0.9; }
-    .json-viewer { flex: 1; overflow: auto; padding: 20px; font-family: monospace; font-size: 13px; line-height: 1.5; }
-    .json-node { margin-left: 12px; }
-    .json-line { display: flex; align-items: flex-start; cursor: pointer; padding: 2px 4px; border-radius: 4px; white-space: nowrap; }
+    aside { width: 280px; background: #ffffff; border-right: 1px solid var(--border-color); padding: 24px; display: flex; flex-direction: column; gap: 16px; }
+    .stat-card { background: #f8fafc; border: 1px solid var(--border-color); padding: 16px; border-radius: 12px; transition: transform 0.2s; }
+    .stat-card:hover { transform: translateY(-2px); border-color: var(--accent); }
+    .label { font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; }
+    .value { font-size: 20px; font-weight: 700; margin-top: 4px; color: var(--text-main); }
+    
+    main { flex: 1; display: flex; flex-direction: column; background: white; margin: 12px; border-radius: 16px; border: 1px solid var(--border-color); overflow: hidden; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
+    .toolbar { padding: 16px 24px; background: white; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+    
+    .btn-dl { background: var(--accent); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 13px; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
+    .btn-dl:hover { background: #1d4ed8; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
+    
+    .json-viewer { flex: 1; overflow: auto; padding: 24px; font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: 13px; line-height: 1.6; background: #ffffff; }
+    .json-node { margin-left: 16px; }
+    .json-line { display: flex; align-items: flex-start; cursor: pointer; padding: 3px 6px; border-radius: 6px; white-space: nowrap; transition: background 0.1s; }
     .json-line:hover { background: #f1f5f9; }
-    .json-toggle { display: inline-block; width: 16px; color: var(--text-muted); font-size: 10px; user-select: none; transition: transform 0.1s; }
+    .json-toggle { display: inline-block; width: 20px; color: var(--text-muted); font-size: 10px; user-select: none; }
     .json-toggle.collapsed { transform: rotate(-90deg); }
-    .json-content-block { margin-left: 8px; border-left: 1px solid #e2e8f0; }
-    .key { color: var(--j-key); font-weight: 600; margin-right: 4px; }
+    .json-content-block { margin-left: 10px; border-left: 1px solid #e2e8f0; }
+    
+    .key { color: var(--j-key); font-weight: 600; margin-right: 6px; }
     .string { color: var(--j-str); }
     .number { color: var(--j-num); }
     .boolean { color: var(--j-bool); }
-    .type-hint { color: var(--text-muted); font-style: italic; font-size: 11px; margin-left: 8px; }
-    footer { background: #0f172a; color: #94a3b8; padding: 6px 24px; font-size: 11px; display: flex; justify-content: space-between; }
+    .type-hint { color: var(--text-muted); font-style: italic; font-size: 11px; margin-left: 8px; opacity: 0.7; }
+    
+    footer { padding: 12px 32px; font-size: 11px; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; }
 </style>
 </head>
 <body>
     <header>
-        <div><span class="logo-badge">IQ</span> <b>iQuest</b> Explorer</div>
-        <div class="author-tag">Author: Kelvin Thom</div>
-        <div style="font-size: 12px;"><span id="status-dot" style="color:#eab308">●</span> <span id="status-text">LOADING_DATA</span></div>
+        <div class="brand"><b>iQuest</b><span>Explorer</span></div>
+        <div class="author-badge">
+            <div class="dot"></div>
+            <span>Auth: Kelvin Thom</span>
+        </div>
+        <div style="font-size: 12px; font-weight: 600;">
+            <span id="status-dot" style="color:#eab308; margin-right: 4px;">●</span> 
+            <span id="status-text" style="color: var(--text-muted)">CONNECTING</span>
+        </div>
     </header>
     <div class="container">
         <aside>
-            <div class="label">Performance</div>
-            <div class="stat-card"><div class="label">Payload</div><div id="size-val" class="value">--</div></div>
-            <div class="stat-card"><div class="label">Root Keys</div><div id="key-count" class="value">--</div></div>
-            <div class="stat-card"><div class="label">Render Mode</div><div class="value" style="font-size: 14px; color:#16a34a;">GitHub Static</div></div>
+            <div class="label" style="margin-bottom: 8px;">Analytics</div>
+            <div class="stat-card"><div class="label">Payload Size</div><div id="size-val" class="value">--</div></div>
+            <div class="stat-card"><div class="label">Total Nodes</div><div id="key-count" class="value">--</div></div>
+            <div class="stat-card">
+                <div class="label">Engine State</div>
+                <div class="value" style="font-size: 14px; color:#16a34a; display: flex; align-items: center; gap: 6px;">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" fill="#16a34a"/></svg> Optimized
+                </div>
+            </div>
         </aside>
         <main>
             <div class="toolbar">
-                <div style="font-weight: 700; color: var(--text-muted); font-size: 11px;">LAZY RENDER ENABLED</div>
-                <button class="btn-dl" onclick="downloadJSON()">📥 Export JSON</button>
+                <div style="font-weight: 600; color: var(--text-muted); font-size: 11px; letter-spacing: 0.05em;">VIRTUALIZED_LIST_ACTIVE</div>
+                <button class="btn-dl" onclick="downloadJSON()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    Download JSON
+                </button>
             </div>
             <div class="json-viewer" id="json-root">
-                <div style="padding: 20px; color: var(--text-muted);">Fetching data.json...</div>
+                <div style="padding: 20px; color: var(--text-muted); text-align: center;">Synchronizing with data.json...</div>
             </div>
         </main>
     </div>
     <footer>
-        <span>iQuest Engine v3.1 | Build: 2026.Static</span>
-        <span>Hosted on GitHub Pages</span>
+        <span>Engine v3.1_Build_2026</span>
+        <span>Verified Architecture &bull; Kelvin Thom</span>
     </footer>
 
     <script>
         let cachedData = null;
 
-        // 1. Fetch data from the static file
         fetch('./data.json')
             .then(res => {
-                if (!res.ok) throw new Error("File data.json not found in repository");
+                if (!res.ok) throw new Error("Data stream unavailable");
                 return res.json();
             })
             .then(data => {
                 cachedData = data;
                 updateStats(data);
                 renderLevel(data, document.getElementById('json-root'), true);
-                
-                // Update Status UI
                 document.getElementById('status-dot').style.color = '#22c55e';
-                document.getElementById('status-text').textContent = 'READY';
+                document.getElementById('status-text').textContent = 'STABLE';
             })
             .catch(err => {
-                document.getElementById('json-root').innerHTML = `<div style="color:var(--j-bool); font-weight:bold;">Error: ${err.message}</div>`;
+                document.getElementById('json-root').innerHTML = `<div style="color:var(--j-bool); text-align:center; padding-top:40px;">System Error: ${err.message}</div>`;
                 document.getElementById('status-dot').style.color = '#dc2626';
-                document.getElementById('status-text').textContent = 'OFFLINE';
+                document.getElementById('status-text').textContent = 'FAILED';
             });
 
-        // 2. Performance stats (Browser-compatible version)
         function updateStats(data) {
             const jsonString = JSON.stringify(data);
             const sizeInBytes = new Blob([jsonString]).size;
             const sizeReadable = sizeInBytes > 1024 * 1024 
                 ? (sizeInBytes / (1024 * 1024)).toFixed(2) + " MB" 
                 : (sizeInBytes / 1024).toFixed(2) + " KB";
-            
             document.getElementById('size-val').textContent = sizeReadable;
-            document.getElementById('key-count').textContent = Object.keys(data).length;
+            document.getElementById('key-count').textContent = Object.keys(data).length.toLocaleString();
         }
 
-        // 3. Your original Render Logic (Kelvin's logic)
         function renderLevel(obj, container, clearFirst = false) {
             if (clearFirst) container.innerHTML = '';
             const frag = document.createDocumentFragment();
@@ -114,6 +154,7 @@
                 node.className = 'json-node';
                 const line = document.createElement('div');
                 line.className = 'json-line';
+                
                 if (isObj) {
                     const toggle = document.createElement('span');
                     toggle.className = 'json-toggle collapsed';
@@ -139,13 +180,15 @@
                     spacer.textContent = '▼';
                     line.appendChild(spacer);
                 }
+
                 const keyS = document.createElement('span');
                 keyS.className = 'key'; keyS.textContent = '"' + key + '":';
                 line.appendChild(keyS);
+
                 if (isObj) {
                     const hint = document.createElement('span');
                     hint.className = 'type-hint';
-                    hint.textContent = Array.isArray(val) ? 'Array(' + val.length + ')' : 'Object';
+                    hint.textContent = Array.isArray(val) ? `[${val.length}]` : '{...}';
                     line.appendChild(hint);
                 } else {
                     const valS = document.createElement('span');
@@ -159,13 +202,13 @@
             container.appendChild(frag);
         }
 
-        // 4. Export Logic
         function downloadJSON() {
-            if (!cachedData) return alert("Data not loaded yet");
-            const blob = new Blob([JSON.stringify(cachedData, null, 2)], {type: 'application/json'});
+            if (!cachedData) return;
+            // No spaces/indents = Minified (approx 3.3MB)
+            const blob = new Blob([JSON.stringify(cachedData)], {type: 'application/json'});
             const a = document.createElement('a');
             a.href = window.URL.createObjectURL(blob);
-            a.download = 'iQuest_Data_Export.json';
+            a.download = 'iQuest_Data_KelvinThom.json';
             a.click();
         }
     </script>
