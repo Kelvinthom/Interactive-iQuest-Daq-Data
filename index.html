@@ -6,19 +6,17 @@
 <title>iQuest Explorer | Kelvin Thom</title>
 <style>
     :root {
-        --bg-app: #f1f5f9; --bg-main: #ffffff; --border-color: #e2e8f0;
+        --bg-app: #f1f5f9; --bg-main: #ffffff; --border-color: #cbd5e1;
         --text-main: #0f172a; --text-muted: #64748b; --accent: #2563eb;
         --j-key: #7c3aed; --j-str: #16a34a; --j-num: #ea580c; --j-bool: #dc2626;
     }
     * { box-sizing: border-box; font-family: 'Inter', system-ui, -apple-system, sans-serif; }
     body { margin: 0; background: var(--bg-app); color: var(--text-main); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
     
-    /* Modern Header Redesign */
     header { 
         height: 64px; 
-        background: rgba(255, 255, 255, 0.8); 
-        backdrop-filter: blur(10px);
-        border-bottom: 1px solid var(--border-color); 
+        background: white;
+        border-bottom: 2px solid var(--border-color); 
         display: flex; 
         align-items: center; 
         padding: 0 32px; 
@@ -29,46 +27,107 @@
     .brand b { font-size: 20px; letter-spacing: -0.5px; color: #0f172a; }
     .brand span { color: var(--accent); font-weight: 400; }
 
-    /* Nice Author Tag */
     .author-badge {
         display: flex;
         align-items: center;
-        background: #f1f5f9;
+        background: #f8fafc;
         padding: 6px 14px;
-        border-radius: 20px;
-        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        border: 2px solid var(--border-color);
     }
-    .author-badge .dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; margin-right: 8px; }
-    .author-badge span { font-size: 12px; font-weight: 600; color: #475569; letter-spacing: 0.3px; }
+    .author-badge .dot { width: 8px; height: 8px; background: #16a34a; border-radius: 50%; margin-right: 8px; }
+    .author-badge span { font-size: 12px; font-weight: 700; color: #1e293b; text-transform: uppercase; }
 
     .container { display: flex; flex: 1; overflow: hidden; }
-    aside { width: 280px; background: #ffffff; border-right: 1px solid var(--border-color); padding: 24px; display: flex; flex-direction: column; gap: 16px; }
-    .stat-card { background: #f8fafc; border: 1px solid var(--border-color); padding: 16px; border-radius: 12px; transition: transform 0.2s; }
-    .stat-card:hover { transform: translateY(-2px); border-color: var(--accent); }
+    
+    /* Sidebar with Bold Border */
+    aside { 
+        width: 280px; 
+        background: #f8fafc; 
+        border-right: 2px solid var(--border-color); 
+        padding: 24px; 
+        display: flex; 
+        flex-direction: column; 
+        gap: 16px; 
+    }
+    .stat-card { 
+        background: white; 
+        border: 2px solid var(--border-color); 
+        padding: 16px; 
+        border-radius: 8px; 
+    }
     .label { font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; }
-    .value { font-size: 20px; font-weight: 700; margin-top: 4px; color: var(--text-main); }
+    .value { font-size: 20px; font-weight: 700; margin-top: 4px; color: var(--accent); }
     
-    main { flex: 1; display: flex; flex-direction: column; background: white; margin: 12px; border-radius: 16px; border: 1px solid var(--border-color); overflow: hidden; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); }
-    .toolbar { padding: 16px 24px; background: white; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+    /* Main Content with Bold Border */
+    main { 
+        flex: 1; 
+        display: flex; 
+        flex-direction: column; 
+        background: white; 
+        margin: 16px; 
+        border-radius: 8px; 
+        border: 2px solid var(--border-color); 
+        overflow: hidden; 
+    }
+    .toolbar { 
+        padding: 16px 24px; 
+        background: #f8fafc; 
+        border-bottom: 2px solid var(--border-color); 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+    }
     
-    .btn-dl { background: var(--accent); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 13px; transition: all 0.2s; display: flex; align-items: center; gap: 8px; }
-    .btn-dl:hover { background: #1d4ed8; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
+    .btn-dl { 
+        background: #0f172a; 
+        color: white; 
+        border: none; 
+        padding: 10px 20px; 
+        border-radius: 4px; 
+        font-weight: 700; 
+        cursor: pointer; 
+        font-size: 12px; 
+        display: flex; 
+        align-items: center; 
+        gap: 8px; 
+    }
+    .btn-dl:hover { background: var(--accent); }
     
-    .json-viewer { flex: 1; overflow: auto; padding: 24px; font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: 13px; line-height: 1.6; background: #ffffff; }
-    .json-node { margin-left: 16px; }
-    .json-line { display: flex; align-items: flex-start; cursor: pointer; padding: 3px 6px; border-radius: 6px; white-space: nowrap; transition: background 0.1s; }
+    .json-viewer { 
+        flex: 1; 
+        overflow: auto; 
+        padding: 20px; 
+        font-family: 'JetBrains Mono', monospace; 
+        font-size: 13px; 
+        line-height: 1.6; 
+    }
+    .json-node { margin-left: 18px; }
+    .json-line { 
+        display: flex; 
+        align-items: flex-start; 
+        cursor: pointer; 
+        padding: 4px 6px; 
+        border-bottom: 1px solid #f1f5f9; /* Subtle line between data rows */
+    }
     .json-line:hover { background: #f1f5f9; }
-    .json-toggle { display: inline-block; width: 20px; color: var(--text-muted); font-size: 10px; user-select: none; }
+    .json-toggle { display: inline-block; width: 20px; color: var(--text-muted); font-size: 10px; }
     .json-toggle.collapsed { transform: rotate(-90deg); }
-    .json-content-block { margin-left: 10px; border-left: 1px solid #e2e8f0; }
+    .json-content-block { margin-left: 10px; border-left: 2px solid #e2e8f0; }
     
     .key { color: var(--j-key); font-weight: 600; margin-right: 6px; }
     .string { color: var(--j-str); }
     .number { color: var(--j-num); }
     .boolean { color: var(--j-bool); }
-    .type-hint { color: var(--text-muted); font-style: italic; font-size: 11px; margin-left: 8px; opacity: 0.7; }
     
-    footer { padding: 12px 32px; font-size: 11px; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center; }
+    footer { 
+        background: #0f172a; 
+        color: #94a3b8; 
+        padding: 8px 32px; 
+        font-size: 11px; 
+        display: flex; 
+        justify-content: space-between; 
+    }
 </style>
 </head>
 <body>
@@ -78,49 +137,40 @@
             <div class="dot"></div>
             <span>Auth: Kelvin Thom</span>
         </div>
-        <div style="font-size: 12px; font-weight: 600;">
-            <span id="status-dot" style="color:#eab308; margin-right: 4px;">●</span> 
-            <span id="status-text" style="color: var(--text-muted)">CONNECTING</span>
+        <div style="font-size: 12px; font-weight: 700; color: var(--text-muted);">
+            <span id="status-dot" style="color:#eab308">●</span> <span id="status-text">SYNCING</span>
         </div>
     </header>
     <div class="container">
         <aside>
-            <div class="label" style="margin-bottom: 8px;">Analytics</div>
+            <div class="label">System Metrics</div>
             <div class="stat-card"><div class="label">Payload Size</div><div id="size-val" class="value">--</div></div>
-            <div class="stat-card"><div class="label">Total Nodes</div><div id="key-count" class="value">--</div></div>
+            <div class="stat-card"><div class="label">Total Keys</div><div id="key-count" class="value">--</div></div>
             <div class="stat-card">
-                <div class="label">Engine State</div>
-                <div class="value" style="font-size: 14px; color:#16a34a; display: flex; align-items: center; gap: 6px;">
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" fill="#16a34a"/></svg> Optimized
-                </div>
+                <div class="label">Engine Status</div>
+                <div class="value" style="font-size: 14px; color:#16a34a;">Active Branch</div>
             </div>
         </aside>
         <main>
             <div class="toolbar">
-                <div style="font-weight: 600; color: var(--text-muted); font-size: 11px; letter-spacing: 0.05em;">VIRTUALIZED_LIST_ACTIVE</div>
-                <button class="btn-dl" onclick="downloadJSON()">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                    Download JSON
-                </button>
+                <div style="font-weight: 800; color: var(--text-muted); font-size: 11px;">READ_ONLY_ACCESS</div>
+                <button class="btn-dl" onclick="downloadJSON()">📥 Download JSON</button>
             </div>
             <div class="json-viewer" id="json-root">
-                <div style="padding: 20px; color: var(--text-muted); text-align: center;">Synchronizing with data.json...</div>
+                <div style="padding: 20px; color: var(--text-muted);">Parsing data.json...</div>
             </div>
         </main>
     </div>
     <footer>
-        <span>Engine v3.1_Build_2026</span>
-        <span>Verified Architecture &bull; Kelvin Thom</span>
+        <span>iQuest Engine v3.1 | GitHub Deploy</span>
+        <span>&copy; 2026 Kelvin Thom</span>
     </footer>
 
     <script>
         let cachedData = null;
 
         fetch('./data.json')
-            .then(res => {
-                if (!res.ok) throw new Error("Data stream unavailable");
-                return res.json();
-            })
+            .then(res => res.json())
             .then(data => {
                 cachedData = data;
                 updateStats(data);
@@ -129,9 +179,7 @@
                 document.getElementById('status-text').textContent = 'STABLE';
             })
             .catch(err => {
-                document.getElementById('json-root').innerHTML = `<div style="color:var(--j-bool); text-align:center; padding-top:40px;">System Error: ${err.message}</div>`;
-                document.getElementById('status-dot').style.color = '#dc2626';
-                document.getElementById('status-text').textContent = 'FAILED';
+                document.getElementById('json-root').innerHTML = `<div style="color:red; padding:20px;">Error loading data.json</div>`;
             });
 
         function updateStats(data) {
@@ -154,7 +202,6 @@
                 node.className = 'json-node';
                 const line = document.createElement('div');
                 line.className = 'json-line';
-                
                 if (isObj) {
                     const toggle = document.createElement('span');
                     toggle.className = 'json-toggle collapsed';
@@ -180,11 +227,9 @@
                     spacer.textContent = '▼';
                     line.appendChild(spacer);
                 }
-
                 const keyS = document.createElement('span');
                 keyS.className = 'key'; keyS.textContent = '"' + key + '":';
                 line.appendChild(keyS);
-
                 if (isObj) {
                     const hint = document.createElement('span');
                     hint.className = 'type-hint';
@@ -204,11 +249,10 @@
 
         function downloadJSON() {
             if (!cachedData) return;
-            // No spaces/indents = Minified (approx 3.3MB)
             const blob = new Blob([JSON.stringify(cachedData)], {type: 'application/json'});
             const a = document.createElement('a');
             a.href = window.URL.createObjectURL(blob);
-            a.download = 'iQuest_Data_KelvinThom.json';
+            a.download = 'iQuest_Export_Kelvin.json';
             a.click();
         }
     </script>
