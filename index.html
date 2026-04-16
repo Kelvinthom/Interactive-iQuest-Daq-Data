@@ -10,236 +10,202 @@
         --text-main: #0f172a; --text-muted: #64748b; --accent: #2563eb;
         --j-key: #7c3aed; --j-str: #16a34a; --j-num: #ea580c; --j-bool: #dc2626;
     }
-    * { box-sizing: border-box; font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+    * { box-sizing: border-box; font-family: 'Inter', system-ui, sans-serif; }
     body { margin: 0; background: var(--bg-app); color: var(--text-main); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
     
+    /* Modern Header */
     header { 
-        height: 64px; 
-        background: white;
-        border-bottom: 2px solid var(--border-color); 
-        display: flex; 
-        align-items: center; 
-        padding: 0 32px; 
-        justify-content: space-between; 
-        z-index: 10; 
+        height: 64px; background: white; border-bottom: 2px solid var(--border-color); 
+        display: flex; align-items: center; padding: 0 20px; justify-content: space-between; z-index: 20; 
     }
-    .brand { display: flex; align-items: center; gap: 12px; }
-    .brand b { font-size: 20px; letter-spacing: -0.5px; color: #0f172a; }
-    .brand span { color: var(--accent); font-weight: 400; }
+    .brand { display: flex; align-items: center; gap: 8px; }
+    .brand b { font-size: 18px; color: #0f172a; }
+    .brand span { color: var(--accent); font-weight: 400; display: none; }
+    @media (min-width: 600px) { .brand span { display: inline; } }
 
     .author-badge {
-        display: flex;
-        align-items: center;
-        background: #f8fafc;
-        padding: 6px 14px;
-        border-radius: 6px;
-        border: 2px solid var(--border-color);
+        display: flex; align-items: center; background: #f8fafc; padding: 4px 10px;
+        border-radius: 6px; border: 2px solid var(--border-color);
     }
-    .author-badge .dot { width: 8px; height: 8px; background: #16a34a; border-radius: 50%; margin-right: 8px; }
-    .author-badge span { font-size: 12px; font-weight: 700; color: #1e293b; text-transform: uppercase; }
+    .author-badge span { font-size: 11px; font-weight: 700; color: #1e293b; }
 
-    .container { display: flex; flex: 1; overflow: hidden; }
-    
-    /* Sidebar with Bold Border */
+    /* Layout Containers */
+    .container { display: flex; flex: 1; overflow: hidden; flex-direction: column; }
+    @media (min-width: 900px) { .container { flex-direction: row; } }
+
+    /* Mobile Tab Switcher */
+    .tabs { display: flex; background: white; border-bottom: 2px solid var(--border-color); }
+    .tab-btn { flex: 1; padding: 12px; border: none; background: none; font-weight: 700; font-size: 12px; color: var(--text-muted); cursor: pointer; border-bottom: 3px solid transparent; }
+    .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+    @media (min-width: 900px) { .tabs { display: none; } }
+
+    /* Info Panel (Notes) */
     aside { 
-        width: 280px; 
-        background: #f8fafc; 
-        border-right: 2px solid var(--border-color); 
-        padding: 24px; 
-        display: flex; 
-        flex-direction: column; 
-        gap: 16px; 
+        width: 100%; background: #f8fafc; border-right: 2px solid var(--border-color); 
+        padding: 20px; overflow-y: auto; display: none; 
     }
-    .stat-card { 
-        background: white; 
-        border: 2px solid var(--border-color); 
-        padding: 16px; 
-        border-radius: 8px; 
-    }
-    .label { font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; }
-    .value { font-size: 20px; font-weight: 700; margin-top: 4px; color: var(--accent); }
-    
-    /* Main Content with Bold Border */
-    main { 
-        flex: 1; 
-        display: flex; 
-        flex-direction: column; 
-        background: white; 
-        margin: 16px; 
-        border-radius: 8px; 
-        border: 2px solid var(--border-color); 
-        overflow: hidden; 
-    }
-    .toolbar { 
-        padding: 16px 24px; 
-        background: #f8fafc; 
-        border-bottom: 2px solid var(--border-color); 
-        display: flex; 
-        justify-content: space-between; 
-        align-items: center; 
-    }
-    
-    .btn-dl { 
-        background: #0f172a; 
-        color: white; 
-        border: none; 
-        padding: 10px 20px; 
-        border-radius: 4px; 
-        font-weight: 700; 
-        cursor: pointer; 
-        font-size: 12px; 
-        display: flex; 
-        align-items: center; 
-        gap: 8px; 
-    }
-    .btn-dl:hover { background: var(--accent); }
-    
-    .json-viewer { 
-        flex: 1; 
-        overflow: auto; 
-        padding: 20px; 
-        font-family: 'JetBrains Mono', monospace; 
-        font-size: 13px; 
-        line-height: 1.6; 
-    }
-    .json-node { margin-left: 18px; }
-    .json-line { 
-        display: flex; 
-        align-items: flex-start; 
-        cursor: pointer; 
-        padding: 4px 6px; 
-        border-bottom: 1px solid #f1f5f9; /* Subtle line between data rows */
-    }
-    .json-line:hover { background: #f1f5f9; }
-    .json-toggle { display: inline-block; width: 20px; color: var(--text-muted); font-size: 10px; }
-    .json-toggle.collapsed { transform: rotate(-90deg); }
-    .json-content-block { margin-left: 10px; border-left: 2px solid #e2e8f0; }
-    
-    .key { color: var(--j-key); font-weight: 600; margin-right: 6px; }
+    aside.active { display: flex; flex-direction: column; }
+    @media (min-width: 900px) { aside { width: 350px; display: flex; } }
+
+    .spec-note { background: white; border: 2px solid var(--border-color); border-radius: 8px; padding: 12px; margin-bottom: 12px; cursor: pointer; transition: 0.2s; }
+    .spec-note:hover { border-color: var(--accent); }
+    .spec-note h4 { margin: 0 0 5px 0; font-size: 14px; color: var(--accent); }
+    .spec-note p { margin: 0; font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+
+    /* Main Explorer Area */
+    main { flex: 1; display: flex; flex-direction: column; background: white; margin: 10px; border-radius: 8px; border: 2px solid var(--border-color); overflow: hidden; display: none; }
+    main.active { display: flex; }
+    @media (min-width: 900px) { main { display: flex; margin: 20px; } }
+
+    .toolbar { padding: 12px 20px; background: #f8fafc; border-bottom: 2px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+    .btn-dl { background: #0f172a; color: white; border: none; padding: 8px 16px; border-radius: 4px; font-weight: 700; cursor: pointer; font-size: 11px; }
+
+    .json-viewer { flex: 1; overflow: auto; padding: 15px; font-family: monospace; font-size: 13px; }
+    .json-node { margin-left: 15px; }
+    .json-line { display: flex; padding: 3px 0; border-bottom: 1px solid #f1f5f9; }
+    .json-toggle { width: 20px; color: var(--text-muted); cursor: pointer; text-align: center; }
+    .json-content-block { border-left: 2px solid #e2e8f0; margin-left: 9px; }
+    .key { color: var(--j-key); font-weight: 600; margin-right: 5px; }
     .string { color: var(--j-str); }
     .number { color: var(--j-num); }
-    .boolean { color: var(--j-bool); }
     
-    footer { 
-        background: #0f172a; 
-        color: #94a3b8; 
-        padding: 8px 32px; 
-        font-size: 11px; 
-        display: flex; 
-        justify-content: space-between; 
-    }
+    footer { background: #0f172a; color: #94a3b8; padding: 6px 20px; font-size: 10px; display: flex; justify-content: space-between; }
 </style>
 </head>
 <body>
     <header>
         <div class="brand"><b>iQuest</b><span>Explorer</span></div>
-        <div class="author-badge">
-            <div class="dot"></div>
-            <span>Auth: Kelvin Thom</span>
-        </div>
-        <div style="font-size: 12px; font-weight: 700; color: var(--text-muted);">
-            <span id="status-dot" style="color:#eab308">●</span> <span id="status-text">SYNCING</span>
-        </div>
+        <div class="author-badge"><span>Auth: Kelvin Thom</span></div>
+        <div style="font-size: 11px;"><span id="status-dot" style="color:#eab308">●</span> <span id="status-text">SYNC</span></div>
     </header>
+
+    <div class="tabs">
+        <button class="tab-btn active" onclick="switchTab('notes')">SPECIFICATION</button>
+        <button class="tab-btn" onclick="switchTab('explorer')">DATA EXPLORER</button>
+    </div>
+
     <div class="container">
-        <aside>
-            <div class="label">System Metrics</div>
-            <div class="stat-card"><div class="label">Payload Size</div><div id="size-val" class="value">--</div></div>
-            <div class="stat-card"><div class="label">Total Keys</div><div id="key-count" class="value">--</div></div>
-            <div class="stat-card">
-                <div class="label">Engine Status</div>
-                <div class="value" style="font-size: 14px; color:#16a34a;">Active Branch</div>
+        <aside id="panel-notes" class="active">
+            <h3 style="font-size: 14px; margin-top:0;">Data Specification</h3>
+            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 20px;">Click a stream to highlight in data.</p>
+            
+            <div class="spec-note" onclick="findInJSON('DAQ_Info')">
+                <h4>DAQ_Info</h4>
+                <p>Metadata, Location (BM-Primary-Milling), Asset IDs, and Sensor mapping.</p>
+            </div>
+            <div class="spec-note" onclick="findInJSON('S_aRMS_t')">
+                <h4>S_aRMS_t</h4>
+                <p>Acceleration RMS (Time Domain). Overall vibration energy intensity.</p>
+            </div>
+            <div class="spec-note" onclick="findInJSON('S_vRMS_t')">
+                <h4>S_vRMS_t</h4>
+                <p>Velocity RMS (Time Domain). Machine vibration severity trends.</p>
+            </div>
+            <div class="spec-note" onclick="findInJSON('S_aTW')">
+                <h4>S_aTW</h4>
+                <p>Acceleration Time Waveform. Raw signal for transient detection.</p>
+            </div>
+            <div class="spec-note" onclick="findInJSON('S_aFFT')">
+                <h4>S_aFFT</h4>
+                <p>Acceleration FFT (Frequency). Identifies mechanical fault signatures.</p>
+            </div>
+            <div class="spec-note" onclick="findInJSON('S_temp')">
+                <h4>S_temp</h4>
+                <p>Temperature. Captures abnormal operating thermal conditions.</p>
             </div>
         </aside>
-        <main>
+
+        <main id="panel-explorer">
             <div class="toolbar">
-                <div style="font-weight: 800; color: var(--text-muted); font-size: 11px;">READ_ONLY_ACCESS</div>
-                <button class="btn-dl" onclick="downloadJSON()">📥 Download JSON</button>
+                <div id="size-val" style="font-weight: 800; color: var(--text-muted); font-size: 10px;">0.00 KB</div>
+                <button class="btn-dl" onclick="downloadJSON()">EXPORT DATA</button>
             </div>
-            <div class="json-viewer" id="json-root">
-                <div style="padding: 20px; color: var(--text-muted);">Parsing data.json...</div>
-            </div>
+            <div class="json-viewer" id="json-root">Loading...</div>
         </main>
     </div>
+
     <footer>
-        <span>iQuest Engine v3.1 | GitHub Deploy</span>
+        <span>iQuest Engine v3.1</span>
         <span>&copy; 2026 Kelvin Thom</span>
     </footer>
 
     <script>
         let cachedData = null;
 
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn, aside, main').forEach(el => el.classList.remove('active'));
+            if(tab === 'notes') {
+                document.getElementById('panel-notes').classList.add('active');
+                document.querySelectorAll('.tab-btn')[0].classList.add('active');
+            } else {
+                document.getElementById('panel-explorer').classList.add('active');
+                document.querySelectorAll('.tab-btn')[1].classList.add('active');
+            }
+        }
+
         fetch('./data.json')
             .then(res => res.json())
             .then(data => {
                 cachedData = data;
-                updateStats(data);
+                const size = new Blob([JSON.stringify(data)]).size;
+                document.getElementById('size-val').textContent = (size / 1024).toFixed(2) + " KB";
                 renderLevel(data, document.getElementById('json-root'), true);
                 document.getElementById('status-dot').style.color = '#22c55e';
                 document.getElementById('status-text').textContent = 'STABLE';
-            })
-            .catch(err => {
-                document.getElementById('json-root').innerHTML = `<div style="color:red; padding:20px;">Error loading data.json</div>`;
             });
 
-        function updateStats(data) {
-            const jsonString = JSON.stringify(data);
-            const sizeInBytes = new Blob([jsonString]).size;
-            const sizeReadable = sizeInBytes > 1024 * 1024 
-                ? (sizeInBytes / (1024 * 1024)).toFixed(2) + " MB" 
-                : (sizeInBytes / 1024).toFixed(2) + " KB";
-            document.getElementById('size-val').textContent = sizeReadable;
-            document.getElementById('key-count').textContent = Object.keys(data).length.toLocaleString();
-        }
-
-        function renderLevel(obj, container, clearFirst = false) {
-            if (clearFirst) container.innerHTML = '';
+        function renderLevel(obj, container, clear = false) {
+            if (clear) container.innerHTML = '';
             const frag = document.createDocumentFragment();
             Object.keys(obj).forEach(key => {
                 const val = obj[key];
                 const isObj = val !== null && typeof val === 'object';
                 const node = document.createElement('div');
                 node.className = 'json-node';
+                node.id = "key-" + key; // ID for interaction
+                
                 const line = document.createElement('div');
                 line.className = 'json-line';
+                
                 if (isObj) {
                     const toggle = document.createElement('span');
-                    toggle.className = 'json-toggle collapsed';
-                    toggle.textContent = '▼';
+                    toggle.className = 'json-toggle';
+                    toggle.textContent = '▶';
                     line.appendChild(toggle);
                     line.onclick = (e) => {
                         e.stopPropagation();
-                        toggle.classList.toggle('collapsed');
+                        const isExpanded = toggle.textContent === '▼';
+                        toggle.textContent = isExpanded ? '▶' : '▼';
                         let content = node.querySelector('.json-content-block');
-                        if (!toggle.classList.contains('collapsed')) {
+                        if (!isExpanded) {
                             if (!content) {
                                 content = document.createElement('div');
                                 content.className = 'json-content-block';
                                 renderLevel(val, content);
                                 node.appendChild(content);
-                            } else { content.style.display = 'block'; }
-                        } else if (content) { content.style.display = 'none'; }
+                            } else content.style.display = 'block';
+                        } else if (content) content.style.display = 'none';
                     };
                 } else {
                     const spacer = document.createElement('span');
-                    spacer.className = 'json-toggle';
-                    spacer.style.visibility = 'hidden';
-                    spacer.textContent = '▼';
-                    line.appendChild(spacer);
+                    spacer.className = 'json-toggle'; spacer.style.visibility = 'hidden';
+                    spacer.textContent = '▶'; line.appendChild(spacer);
                 }
+
                 const keyS = document.createElement('span');
                 keyS.className = 'key'; keyS.textContent = '"' + key + '":';
                 line.appendChild(keyS);
-                if (isObj) {
-                    const hint = document.createElement('span');
-                    hint.className = 'type-hint';
-                    hint.textContent = Array.isArray(val) ? `[${val.length}]` : '{...}';
-                    line.appendChild(hint);
-                } else {
+
+                if (!isObj) {
                     const valS = document.createElement('span');
                     valS.className = typeof val;
                     valS.textContent = typeof val === 'string' ? '"' + val + '"' : val;
                     line.appendChild(valS);
+                } else {
+                    const hint = document.createElement('span');
+                    hint.style.color = '#94a3b8'; hint.style.fontSize = '10px';
+                    hint.textContent = Array.isArray(val) ? `[${val.length}]` : '{...}';
+                    line.appendChild(hint);
                 }
                 node.appendChild(line);
                 frag.appendChild(node);
@@ -247,12 +213,24 @@
             container.appendChild(frag);
         }
 
+        function findInJSON(key) {
+            switchTab('explorer');
+            const target = document.getElementById('key-' + key);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                target.style.background = '#fef9c3';
+                setTimeout(() => target.style.background = 'transparent', 2000);
+            } else {
+                alert("Key '" + key + "' not found in current data root.");
+            }
+        }
+
         function downloadJSON() {
             if (!cachedData) return;
             const blob = new Blob([JSON.stringify(cachedData)], {type: 'application/json'});
             const a = document.createElement('a');
             a.href = window.URL.createObjectURL(blob);
-            a.download = 'iQuest_Export_Kelvin.json';
+            a.download = 'iQuest_Data.json';
             a.click();
         }
     </script>
