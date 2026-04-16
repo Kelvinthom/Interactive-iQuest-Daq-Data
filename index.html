@@ -16,7 +16,6 @@
         * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { margin: 0; background: var(--bg-app); color: var(--text-main); height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
         
-        /* Navigation */
         header { height: 64px; background: white; border-bottom: 2px solid var(--border-color); display: flex; align-items: center; padding: 0 24px; justify-content: space-between; z-index: 50; }
         .nav-left { display: flex; align-items: center; gap: 40px; }
         .brand { display: flex; align-items: center; gap: 8px; font-size: 20px; font-weight: 800; color: #0f172a; }
@@ -30,7 +29,6 @@
         .nav-links a:hover { background: #f1f5f9; color: var(--text-main); }
         .nav-links a.active { color: var(--accent); background: #eff6ff; }
 
-        /* Author Banner */
         .author-banner {
             display: flex; align-items: center; gap: 12px; background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
             padding: 6px 20px; border-radius: 12px; color: white; border: 1px solid rgba(255,255,255,0.1);
@@ -38,7 +36,6 @@
         .author-banner .label { font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.6; font-weight: 800; }
         .author-banner .name { font-size: 14px; font-weight: 600; }
 
-        /* Layout Views */
         .view-container { flex: 1; display: flex; overflow: hidden; position: relative; }
         .page-view { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none; flex-direction: column; }
         .page-view.active { display: flex; }
@@ -49,28 +46,19 @@
         .stat-card .l { font-size: 10px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px; }
         .stat-card .v { font-size: 20px; font-weight: 700; color: var(--accent); }
         
-        main { flex: 1; display: flex; flex-direction: column; background: white; margin: 12px; border-radius: 12px; border: 1px solid var(--border-color); overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
+        main { flex: 1; display: flex; flex-direction: column; background: white; margin: 12px; border-radius: 12px; border: 1px solid var(--border-color); overflow: hidden; }
         .toolbar { padding: 12px 20px; background: #f8fafc; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
         .btn-dl { background: #0f172a; color: white; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 700; cursor: pointer; font-size: 12px; display: flex; align-items: center; gap: 8px; }
 
-        /* HIGH PERFORMANCE JSON VIEW */
+        /* JSON VIEWER PERFORMANCE */
         .json-viewer { flex: 1; overflow: auto; padding: 24px; font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.6; }
-        .json-node { margin-left: 24px; position: relative; }
+        .json-node { margin-left: 24px; }
         .json-line { display: flex; padding: 1px 0; cursor: pointer; white-space: nowrap; align-items: center; border-radius: 4px; }
         .json-line:hover { background: #f1f5f9; }
-        
-        /* CSS Arrow Toggle (No SVG Overhead) */
-        .json-toggle { 
-            width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center;
-            color: var(--text-muted); transition: transform 0.1s; cursor: pointer; font-family: serif;
-        }
-        .can-expand::before {
-            content: ''; width: 0; height: 0; border-top: 4px solid transparent; border-bottom: 4px solid transparent;
-            border-left: 6px solid currentColor; display: inline-block;
-        }
+        .json-toggle { width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; color: var(--text-muted); transition: transform 0.1s; }
+        .can-expand::before { content: ''; width: 0; height: 0; border-top: 4px solid transparent; border-bottom: 4px solid transparent; border-left: 6px solid currentColor; }
         .no-expand::before { content: '—'; opacity: 0.2; font-size: 10px; }
         .expanded > .json-line > .can-expand { transform: rotate(90deg); }
-
         .json-content-block { border-left: 1px solid #e2e8f0; margin-left: 9px; }
         
         .syntax-key { color: var(--j-key); font-weight: 600; margin-right: 8px; }
@@ -79,10 +67,16 @@
         .syntax-boolean { color: var(--j-bool); }
         .syntax-null { color: var(--j-null); }
 
-        /* Notes View */
+        /* FULL NOTES STYLING */
         .notes-view { padding: 40px; overflow-y: auto; background: white; flex: 1; }
-        .notes-content { max-width: 850px; margin: 0 auto; line-height: 1.8; }
-        .notes-content h1 { font-size: 32px; font-weight: 800; border-bottom: 4px solid var(--accent); padding-bottom: 12px; }
+        .notes-content { max-width: 850px; margin: 0 auto; line-height: 1.8; color: #334155; }
+        .notes-content h1 { font-size: 32px; font-weight: 800; border-bottom: 4px solid var(--accent); padding-bottom: 12px; margin-bottom: 24px; color: #0f172a; }
+        .notes-content h2 { font-size: 24px; margin-top: 40px; color: #0f172a; }
+        .notes-content h3 { font-size: 20px; margin-top: 30px; color: var(--accent); }
+        .notes-content h4 { font-size: 16px; margin-top: 20px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); }
+        .notes-content hr { border: none; border-top: 1px solid var(--border-color); margin: 30px 0; }
+        .notes-content ul { padding-left: 20px; }
+        .notes-content li { margin-bottom: 8px; }
         .notes-content pre { border-radius: 12px; margin: 20px 0; }
         
         footer { background: #0f172a; color: #64748b; padding: 12px 24px; font-size: 11px; display: flex; justify-content: space-between; }
@@ -92,7 +86,7 @@
 
     <header>
         <div class="nav-left">
-            <div class="brand"><i data-lucide="database" size="22"></i> iQuest<span>Explorer</span></div>
+            <div class="brand"><i data-lucide="activity" size="22"></i> iQuest<span>Explorer</span></div>
             <nav class="nav-links">
                 <a id="nav-home" class="active" onclick="showPage('home')"><i data-lucide="home" size="16"></i> Home</a>
                 <a id="nav-notes" onclick="showPage('notes')"><i data-lucide="book-open" size="16"></i> Notes</a>
@@ -111,28 +105,15 @@
         <div id="page-home" class="page-view active">
             <div class="explorer-layout">
                 <aside>
-                    <div class="stat-card">
-                        <div class="l">Data Weight</div>
-                        <div id="size-val" class="v">0.00 MB</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="l">Total Roots</div>
-                        <div id="key-count" class="v">0</div>
-                    </div>
-                    <div style="margin-top: auto; font-size: 10px; color: var(--text-muted); background: #eff6ff; padding: 10px; border-radius: 6px; border: 1px solid #dbeafe;">
-                        <b>Performance Mode:</b> Optimized CSS rendering is active for Kelvin Thom's high-speed data stream.
-                    </div>
+                    <div class="stat-card"><div class="l">Data Weight</div><div id="size-val" class="v">0.00 MB</div></div>
+                    <div class="stat-card"><div class="l">Root Keys</div><div id="key-count" class="v">0</div></div>
                 </aside>
                 <main>
                     <div class="toolbar">
-                        <div style="font-weight: 700; color: var(--text-muted); font-size: 11px; display: flex; align-items: center; gap: 8px;">
-                            <i data-lucide="cpu" size="14"></i> DAQ_STREAM_V3.2
-                        </div>
-                        <button class="btn-dl" onclick="downloadJSON()">
-                            <i data-lucide="download" size="14"></i> Export JSON
-                        </button>
+                        <div style="font-weight: 700; color: var(--text-muted); font-size: 11px; display: flex; align-items: center; gap: 8px;"><i data-lucide="terminal" size="14"></i> DAQ_CORE_V3.2</div>
+                        <button class="btn-dl" onclick="downloadJSON()"><i data-lucide="zap" size="14"></i> Download Minified</button>
                     </div>
-                    <div class="json-viewer" id="json-root">Initializing Virtual Stream...</div>
+                    <div class="json-viewer" id="json-root">Scanning Data...</div>
                 </main>
             </div>
         </div>
@@ -141,42 +122,67 @@
             <div class="notes-view">
                 <div class="notes-content">
                     <h1>iQuest-Vib-Daq Data Specification</h1>
-                    <p>The iQuest-Vib-Daq system provides vibration and condition monitoring data for predictive analytics.</p>
-                    
-                    <h2>Core Data Streams</h2>
+                    <h2>Overview</h2>
+                    <p>The iQuest-Vib-Daq system provides vibration and condition monitoring data for predictive analytics and fault detection. This document defines the structure, parameters, and data types available for cloud ingestion and analytics processing.</p>
+                    <hr>
+                    <h2>Data Streams</h2>
+                    <p>The Data Acquisition (DAQ) system generates the following primary data types.</p>
+                    <hr>
                     <h3>DAQ_Info</h3>
+                    <p>Metadata describing the acquisition setup, monitored asset, and sensor configuration.</p>
+                    <h4>Fields</h4>
+                    <ul>
+                        <li><b>Location</b>: Physical or operational site of the asset.</li>
+                        <li><b>assetID</b>: Unique identifier of the monitored machine.</li>
+                        <li><b>sensorLabels</b>: Human-readable names describing sensor positions.</li>
+                        <li><b>sensorID</b>: Internal identifiers mapped to each sensor channel.</li>
+                        <li><b>Units</b>: Measurement units (g, mm/s, degrees C, ms, Hz).</li>
+                    </ul>
                     <pre><code class="language-json">{
   "DAQ_Info": {
     "Location": "BM-Primary-Milling",
     "assetID": "Ball-mill-3",
-    "sensorLabels": ["MTR-NDE-H", "G/OU-DE-V", "MTR-DE-H"],
+    "sensorLabels": ["MTR-NDE-H", "G/OU-DE-V", "MTR-DE-H", "G/IN-DE-H", "G/IN-NDE-H", "G/OU-NDE-H", "PN-DE-H", "PN-NDE-H"],
+    "sensorID": ["POINT1", "POINT2", "POINT3", "POINT4", "POINT5", "POINT6", "POINT7", "POINT8"],
     "Units": ["g", "mm/s", "degrees C", "ms", "Hz"]
   }
 }</code></pre>
 
-                    <h3>Vibration Metrics</h3>
-                    <ul>
-                        <li><b>S_aRMS_t:</b> Acceleration Energy over time.</li>
-                        <li><b>S_vTW:</b> Velocity Time Waveforms for transient analysis.</li>
-                        <li><b>S_aFFT:</b> Spectral decomposition for fault detection.</li>
-                    </ul>
+                    <h3>S_aRMS_t</h3>
+                    <p>Time-domain Root Mean Square (RMS) of acceleration signals. Represents overall vibration energy or intensity over time.</p>
+                    <hr>
+                    <h3>S_vRMS_t</h3>
+                    <p>Time-domain Root Mean Square (RMS) of velocity signals. Commonly used to assess machine vibration severity.</p>
+                    <hr>
+                    <h3>S_aTW</h3>
+                    <p>Acceleration Time Waveform data. Raw or processed acceleration signal sampled over time.</p>
+                    <hr>
+                    <h3>S_vTW</h3>
+                    <p>Velocity Time Waveform data. Time-based velocity signal used in condition monitoring.</p>
+                    <hr>
+                    <h3>S_aFFT</h3>
+                    <p>Frequency-domain representation (FFT) of acceleration signals. Used to identify specific vibration harmonics.</p>
+                    <hr>
+                    <h3>S_vFFT</h3>
+                    <p>Frequency-domain representation (FFT) of velocity signals. Commonly used in rotating machinery diagnostics.</p>
+                    <hr>
+                    <h3>S_temp</h3>
+                    <p>Temperature measurements captured by the DAQ system for thermal monitoring.</p>
+                    <hr>
+                    <h3>speedRMS</h3>
+                    <p>RMS value of rotational speed or speed variation. Indicates operational stability.</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <footer>
-        <span>Engine Status: Operational</span>
-        <span>Build: 2026.PROD &copy; Kelvin Thom</span>
-    </footer>
+    <footer><span>Status: Online</span><span>&copy; 2026 Kelvin Thom</span></footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-json.min.js"></script>
 
     <script>
-        // Initialize static icons only
         lucide.createIcons();
-
         let cachedData = null;
 
         function showPage(pageId) {
@@ -186,40 +192,33 @@
             document.getElementById('nav-' + pageId).classList.add('active');
         }
 
-        function createSyntaxSpan(value) {
-            const span = document.createElement('span');
-            const type = typeof value;
-            if (value === null) { span.className = 'syntax-null'; span.textContent = 'null'; }
-            else if (type === 'string') { span.className = 'syntax-string'; span.textContent = `"${value}"`; }
-            else if (type === 'number') { span.className = 'syntax-number'; span.textContent = value; }
-            else if (type === 'boolean') { span.className = 'syntax-boolean'; span.textContent = value; }
-            return span;
+        function createSyntaxSpan(v) {
+            const s = document.createElement('span');
+            if (v === null) { s.className = 'syntax-null'; s.textContent = 'null'; }
+            else if (typeof v === 'string') { s.className = 'syntax-string'; s.textContent = `"${v}"`; }
+            else if (typeof v === 'number') { s.className = 'syntax-number'; s.textContent = v; }
+            else if (typeof v === 'boolean') { s.className = 'syntax-boolean'; s.textContent = v; }
+            return s;
         }
 
-        // BLAZING FAST LAZY RENDERING
         function renderLazyLevel(obj, container) {
             const frag = document.createDocumentFragment();
-            const keys = Object.keys(obj);
-            
-            keys.forEach(key => {
+            Object.keys(obj).forEach(key => {
                 const val = obj[key];
                 const isObj = val !== null && typeof val === 'object';
-                
                 const node = document.createElement('div');
                 node.className = 'json-node';
-
                 const line = document.createElement('div');
                 line.className = 'json-line';
 
-                // CSS-ONLY Toggle (High Performance)
                 const toggle = document.createElement('span');
                 toggle.className = isObj ? 'json-toggle can-expand' : 'json-toggle no-expand';
                 line.appendChild(toggle);
 
-                const keySpan = document.createElement('span');
-                keySpan.className = 'syntax-key';
-                keySpan.textContent = `"${key}":`;
-                line.appendChild(keySpan);
+                const kS = document.createElement('span');
+                kS.className = 'syntax-key';
+                kS.textContent = `"${key}":`;
+                line.appendChild(kS);
 
                 if (isObj) {
                     const hint = document.createElement('span');
@@ -238,15 +237,14 @@
                             renderLazyLevel(val, block);
                             node.appendChild(block);
                         } else {
-                            const isHidden = block.style.display === 'none';
-                            block.style.display = isHidden ? 'block' : 'none';
-                            node.classList.toggle('expanded', isHidden);
+                            const hid = block.style.display === 'none';
+                            block.style.display = hid ? 'block' : 'none';
+                            node.classList.toggle('expanded', hid);
                         }
                     };
                 } else {
                     line.appendChild(createSyntaxSpan(val));
                 }
-
                 node.appendChild(line);
                 frag.appendChild(node);
             });
@@ -257,25 +255,22 @@
             .then(res => res.json())
             .then(data => {
                 cachedData = data;
-                // Calculate MB
-                const sizeInBytes = new Blob([JSON.stringify(data)]).size;
-                document.getElementById('size-val').textContent = (sizeInBytes / (1024 * 1024)).toFixed(2) + " MB";
+                const bytes = new Blob([JSON.stringify(data)]).size;
+                document.getElementById('size-val').textContent = (bytes / (1024 * 1024)).toFixed(2) + " MB";
                 document.getElementById('key-count').textContent = Object.keys(data).length;
-                
                 const root = document.getElementById('json-root');
                 root.innerHTML = '';
                 renderLazyLevel(data, root);
             })
-            .catch(() => {
-                document.getElementById('json-root').innerHTML = `<div style="color:#dc2626; padding: 20px;">Error: data.json not found in root directory.</div>`;
-            });
+            .catch(() => { document.getElementById('json-root').innerHTML = "No data.json found."; });
 
         function downloadJSON() {
             if (!cachedData) return;
-            const blob = new Blob([JSON.stringify(cachedData, null, 2)], {type: 'application/json'});
+            // MINIFIED: JSON.stringify with no space arguments produces the smallest file size
+            const blob = new Blob([JSON.stringify(cachedData)], {type: 'application/json'});
             const a = document.createElement('a');
             a.href = window.URL.createObjectURL(blob);
-            a.download = 'iQuest_Full_Export.json';
+            a.download = 'iQuest_Data_Minified.json';
             a.click();
         }
     </script>
